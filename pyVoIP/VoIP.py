@@ -421,6 +421,17 @@ class VoIPCall:
         if self.request.headers["Call-ID"] in self.phone.calls:
             del self.phone.calls[self.request.headers["Call-ID"]]
 
+    def cancel_request(self) -> None:
+        if self.state == CallState.ANSWERED:
+            self.hangup()  # Call hangup() method if the call is already answered
+        else:
+            for x in self.RTPClients:
+                x.stop()
+            self.sip.cancel(self.request)
+            self.state = CallState.ENDED
+            if self.request.headers["Call-ID"] in self.phone.calls:
+                del self.phone.calls[self.request.headers["Call-ID"]]
+
     def bye(self) -> None:
         if self.state == CallState.ANSWERED:
             for x in self.RTPClients:
