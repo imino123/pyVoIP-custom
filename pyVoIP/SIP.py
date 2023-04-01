@@ -1548,7 +1548,7 @@ class SIPClient:
         byeRequest += f"From: {toH};tag={tag}\r\n"
     byeRequest += f"Call-ID: {request.headers['Call-ID']}\r\n"
     cseq = int(request.headers["CSeq"]["check"]) + 1
-    byeRequest += f"CSeq: {cseq} BYE\r\n"
+    byeRequest += f"CSeq: {cseq} CANCEL\r\n"
     byeRequest += (
         "Contact: "
         + f"<sip:{self.username}@{self.myIP}:{self.myPort}>\r\n"
